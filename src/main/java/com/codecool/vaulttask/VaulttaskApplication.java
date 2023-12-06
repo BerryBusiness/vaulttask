@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
 import java.util.List;
 
 @SpringBootApplication
@@ -26,11 +27,15 @@ public class VaulttaskApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        List<String> lines = fileReader.readLines("/input.txt");
-        int validCount = (int) lines.stream()
-                .filter(validationService::isValidPassphrase)
-                .count();
-        System.out.println("Helyes jelmondatok szama: " + validCount);
+    public void run(String... args){
+        try {
+            List<String> lines = fileReader.readLines("/input.txt");
+            int validCount = (int) lines.stream()
+                    .filter(validationService::isValidPassphrase)
+                    .count();
+            System.out.println("Helyes jelmondatok száma: " + validCount);
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
     }
 }
